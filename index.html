@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0f3460">
+    <meta name="description" content="🔮 Oracle Yi Ching Complet - 64 Hexagrammes Enrichis">
+    <title>🔮 Oracle Yi Ching Complet</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23FFD700' width='192' height='192'/><text x='96' y='96' font-size='120' text-anchor='middle' dominant-baseline='central' fill='%23000'>🔮</text></svg>">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #0f3460 0%, #16213e 50%, #1a1a2e 100%);
+            color: white;
+            padding: 20px;
+            padding-bottom: 40px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-top: 20px;
+        }
+
+        h1 {
+            font-size: clamp(2rem, 8vw, 3rem);
+            color: #FFD700;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .phase-counter {
+            font-size: 0.85rem;
+            color: #FFD700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .construction-zone {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(108, 92, 231, 0.1));
+            border: 3px solid #FFD700;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .construction-title {
+            font-size: 1.3rem;
+            color: #FFD700;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: bold;
+        }
+
+        .traits-display {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            min-height: 160px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .trait-line {
+            font-size: 2.5rem;
+            font-weight: bold;
+            letter-spacing: 4px;
+            font-family: monospace;
+            padding: 12px 20px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            min-width: 200px;
+        }
+
+        .trait-line.stable {
+            color: #FFD700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+            background: rgba(255, 215, 0, 0.08);
+        }
+
+        .trait-line.changing {
+            color: #000;
+            background: linear-gradient(135deg, #FF00FF, #FF1493);
+            box-shadow: 0 0 25px rgba(255, 0, 255, 0.7), inset 0 0 10px rgba(255, 255, 255, 0.3);
+            font-weight: bold;
+        }
+
+        button {
+            padding: 15px 40px;
+            font-size: 1rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #000;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px auto;
+            display: block;
+            box-shadow: 0 8px 30px rgba(255, 215, 0, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-family: Georgia, serif;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 40px rgba(255, 215, 0, 0.5);
+        }
+
+        button:disabled {
+            background: rgba(100, 100, 100, 0.5);
+            cursor: not-allowed;
+            color: rgba(255, 255, 255, 0.5);
+            box-shadow: none;
+            transform: none;
+        }
+
+        .btn-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .btn-option {
+            padding: 12px 15px;
+            font-size: 0.85rem;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.3), rgba(255, 165, 0, 0.2));
+            color: #FFD700;
+            border: 2px solid rgba(255, 215, 0, 0.5);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            font-family: Georgia, serif;
+        }
+
+        .btn-option:hover {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.6), rgba(255, 165, 0, 0.4));
+            border-color: #FFD700;
+            transform: scale(1.08);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+        }
+
+        .btn-option.selected {
+            background: #FFD700;
+            color: #000;
+            border-color: #FFD700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+        }
+
+        .btn-option.changing {
+            background: linear-gradient(135deg, rgba(255, 0, 255, 0.4), rgba(255, 20, 147, 0.3));
+            border-color: #FF00FF;
+            color: #FFB6FF;
+        }
+
+        .btn-option.changing:hover {
+            background: linear-gradient(135deg, rgba(255, 0, 255, 0.7), rgba(255, 20, 147, 0.6));
+        }
+
+        .btn-option.changing.selected {
+            background: #FF00FF;
+            color: #000;
+            box-shadow: 0 0 25px rgba(255, 0, 255, 0.8);
+        }
+
+        .trigram-display {
+            background: linear-gradient(135deg, rgba(100, 200, 150, 0.2), rgba(100, 150, 200, 0.2));
+            border: 2px dashed rgba(255, 215, 0, 0.4);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .trigram-symbol {
+            font-size: 4rem;
+            margin: 15px 0;
+            color: #FFD700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+        }
+
+        .trigram-name {
+            font-size: 1.2rem;
+            color: #FFD700;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .trigram-french {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .hexagram-final {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(200, 100, 0, 0.15));
+            border: 3px solid #FFD700;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .hexagram-symbol {
+            font-size: 5rem;
+            margin: 20px 0;
+            color: #FFD700;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+        }
+
+        .hexagram-title {
+            font-size: 2rem;
+            color: #FFD700;
+            margin: 15px 0;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        }
+
+        .hexagram-number {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 15px;
+        }
+
+        .oracle-interpretation {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            border-left: 4px solid #FFD700;
+            padding: 25px;
+            margin: 20px 0;
+            text-align: left;
+            max-height: 800px;
+            overflow-y: auto;
+        }
+
+        .oracle-section {
+            margin-bottom: 25px;
+        }
+
+        .oracle-section-title {
+            font-size: 1.1rem;
+            color: #FFD700;
+            font-weight: bold;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .oracle-text {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.85);
+            line-height: 1.8;
+        }
+
+        .oracle-text strong {
+            color: #FFB6FF;
+        }
+
+        .oracle-text em {
+            color: #FF9FF3;
+            font-style: italic;
+        }
+
+        .changing-indicator {
+            background: linear-gradient(135deg, rgba(255, 0, 255, 0.2), rgba(255, 20, 147, 0.15));
+            border-left: 3px solid #FF00FF;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 6px;
+        }
+
+        .changing-indicator strong {
+            color: #FF00FF;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        .hexagram-info {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: left;
+        }
+
+        .info-line {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+
+        .info-label {
+            color: #FFD700;
+            font-weight: bold;
+        }
+
+        .trait-legend {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 0.85rem;
+        }
+
+        .legend-item {
+            display: inline-block;
+            margin: 8px 10px;
+            padding: 8px 12px;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 5px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .legend-changing {
+            background: linear-gradient(135deg, rgba(255, 0, 255, 0.3), rgba(255, 20, 147, 0.2));
+            color: #FFB6FF;
+            border-color: #FF00FF;
+        }
+
+        .initial-message {
+            background: rgba(255, 215, 0, 0.08);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .initial-emoji {
+            font-size: 4rem;
+            margin-bottom: 15px;
+        }
+
+        .initial-title {
+            font-size: 1.8rem;
+            color: #FFD700;
+            margin-bottom: 15px;
+        }
+
+        .initial-text {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .instructions {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-align: left;
+        }
+
+        .step {
+            margin: 12px 0;
+            padding-left: 25px;
+        }
+
+        .step::before {
+            content: "→ ";
+            color: #FFD700;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .trait-line {
+                font-size: 2rem;
+            }
+
+            .trigram-symbol {
+                font-size: 3rem;
+            }
+
+            .hexagram-symbol {
+                font-size: 3.5rem;
+            }
+
+            .hexagram-title {
+                font-size: 1.5rem;
+            }
+
+            button {
+                padding: 12px 30px;
+                font-size: 0.9rem;
+            }
+
+            .btn-options {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .trait-line {
+                min-width: 150px;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .oracle-interpretation::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .oracle-interpretation::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        .oracle-interpretation::-webkit-scrollbar-thumb {
+            background: #FFD700;
+            border-radius: 10px;
+        }
+
+        .oracle-interpretation::-webkit-scrollbar-thumb:hover {
+            background: #FFA500;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔮 Oracle Yi Ching Complet 🔮</h1>
+            <p class="subtitle">Les 64 Hexagrammes du Destin avec Interprétations Enrichies</p>
+            <p class="subtitle">Traits changeants en magenta • Guidance holistique complète</p>
+            <div class="phase-counter" id="phaseCounter">PRÊT À CONSULTER</div>
+        </header>
+
+        <div id="content"></div>
+    </div>
+
+    <script>
+        // ========== DONNÉES TRIGRAMMES ==========
+        const TRIGRAMS = [
+            { index: 0, symbol: '☷', pinyin: 'Kūn', fr: 'Terre', desc: 'Réceptif, stable, mère' },
+            { index: 1, symbol: '☶', pinyin: 'Gèn', fr: 'Montagne', desc: 'Immobilité, repos, arrêt' },
+            { index: 2, symbol: '☵', pinyin: 'Kǎn', fr: 'Eau', desc: 'Profondeur, danger, abîme' },
+            { index: 3, symbol: '☴', pinyin: 'Xùn', fr: 'Vent', desc: 'Pénétration, douceur, grâce' },
+            { index: 4, symbol: '☳', pinyin: 'Zhèn', fr: 'Tonnerre', desc: 'Mouvement, choc, éveil' },
+            { index: 5, symbol: '☲', pinyin: 'Lí', fr: 'Feu', desc: 'Clarté, chaleur, illumination' },
+            { index: 6, symbol: '☱', pinyin: 'Duì', fr: 'Lac', desc: 'Joie, échange, convivialité' },
+            { index: 7, symbol: '☰', pinyin: 'Qiàn', fr: 'Ciel', desc: 'Créatif, actif, père, force' }
+        ];
+
+        // ========== GRILLE 8×8 ==========
+        const GRID = [
+            [2,23,8,20,16,35,45,12],
+            [15,52,39,53,62,56,31,33],
+            [7,4,29,59,40,64,47,6],
+            [46,18,48,57,32,50,28,44],
+            [24,27,3,42,51,21,17,25],
+            [36,22,63,37,55,30,49,13],
+            [19,41,60,61,54,38,58,10],
+            [11,26,5,9,34,14,43,1]
+        ];
+
+        // ========== LES 64 HEXAGRAMMES COMPLETS ==========
+        const HEXAGRAMS = {
+            1: {
+                name: "Élan Créatif",
+                tarot: "I · Le Bateleur",
+                image: "乾",
+                theme: "Qiàn wéi Tiān",
+                meaning: "Force primordiale, création absolue, commencement divin",
+                interpretation: "Cet hexagramme révèle la puissance créatrice sans limite. Vous êtes face à un moment d'expansion cosmique où tout est possible. L'univers manifeste son énergie créatrice à travers vous. Agissez avec confiance, initiez les grands projets, car l'énergie yang prime absolument. C'est le moment du potentiel infini et de la manifestation du rêve en réalité.",
+                advice: "Soyez audacieux. Lancez-vous dans vos projets majeurs. La fortune vous accompagne. Initiez, créez, manifestez. C'est votre moment de gloire cosmique.",
+                warning: "La force absolue ne doit pas devenir arrogance. Restez humble face à l'univers."
+            },
+            2: {
+                name: "Élan Réceptif",
+                tarot: "II · La Papesse",
+                image: "坤",
+                theme: "Kūn wéi Dì",
+                meaning: "Réceptivité absolue, terre nourricière, accueil universel",
+                interpretation: "L'énergie yin en son expression la plus pure. C'est le moment d'accueil, de réception, de soutien universel. La terre vous porte, l'univers vous soutient. Bien que l'action créatrice soit en attente, la fondation se prépare. Écoutez les whispers du destin, acceptez ce qui vient, soyez patient et nourrisseur. Votre puissance est dans l'adaptabilité et la réceptivité bienveillante.",
+                advice: "Acceptez, accueillez, soutenez. Soyez patient et stable. Nourrir est votre force. Écoutez les autres et la nature.",
+                warning: "L'adaptabilité excessive peut devenir passivité. Maintenez vos limites."
+            },
+            3: {
+                name: "Difficultés Initiales",
+                tarot: "8 de Coupes",
+                image: "屯",
+                theme: "Shuǐ Léi Zhūn",
+                meaning: "Chaos organisé, obstacles créateurs, fondation instable",
+                interpretation: "Au commencement, le chaos s'organise. Des difficultés surgissent, mais elles sont le creuset de la création. C'est le moment de persévérance intelligente. Cherchez la guidance, établissez une stratégie claire. Les obstacles ne sont pas des punitions mais des initiateurs de croissance. Traversez cette période avec sagesse et détermination.",
+                advice: "Persévérez avec intelligence. Cherchez conseil. Établissez une base solide. Les obstacles vous enseignent.",
+                warning: "Ne vous découragez pas face aux premiers obstacles. C'est normal et productif."
+            },
+            4: {
+                name: "Immaturité",
+                tarot: "4 de Deniers",
+                image: "蒙",
+                theme: "Shān Shuǐ Méng",
+                meaning: "Innocence naïve, apprentissage fondamental, instruction requise",
+                interpretation: "L'innocence juvénile demande instruction. Vous êtes face à un apprentissage essentiel où la naïveté doit être transformée en sagesse. Acceptez la guidance avec humilité, posez les questions justes, soyez ouvert. Chaque leçon de cette période sera précieuse pour votre croissance spirituelle. C'est une phase d'initiation sacrée.",
+                advice: "Recherchez les vrais maîtres. Soyez humble et curieux. L'apprentissage est votre chemin.",
+                warning: "L'arrogance bloque l'apprentissage. Restez humble et ouvert."
+            },
+            5: {
+                name: "Attendre",
+                tarot: "Reine de Coupes",
+                image: "需",
+                theme: "Shuǐ Tiān Xū",
+                meaning: "Patience nourricière, préparation consciente, timing divin",
+                interpretation: "Avant d'agir, vous devez attendre le moment propice. La patience est active, non passive. Préparez-vous mentalement, émotionnellement et spirituellement. Nourrissez votre être intérieur. Cette attente n'est pas stérile mais fertile, remplie de potentiel latent. Faites confiance au timing de l'univers. Le moment de l'action viendra.",
+                advice: "Attendez le bon moment. Préparez-vous consciemment. Nourrissez votre âme. La confiance est votre vertu.",
+                warning: "L'attente excessive peut paralyser. Agissez dans la préparation."
+            },
+            6: {
+                name: "Plaider Sa Cause",
+                tarot: "6 d'Épées",
+                image: "讼",
+                theme: "Tiān Shuǐ Sòng",
+                meaning: "Conflit initié, confrontation nécessaire, clarification urgente",
+                interpretation: "Un conflit surgit, demandant clarification honnête. Présentez votre cas avec vérité et justice. La parole est votre arme, non la force brute. Évitez l'escalade émotionnelle. Cherchez la compréhension mutuelle. La sagesse de la parole juste peut transformer tout conflit en harmonie. Soyez honnête, clair, équitable et vraiment écoutant.",
+                advice: "Parlez votre vérité avec courage. Écoutez aussi. La clarté résout les conflits.",
+                warning: "Le conflit peut être dépassé si vous restez égotiste. Cherchez le bien commun."
+            },
+            7: {
+                name: "Armée",
+                tarot: "3 de Deniers",
+                image: "师",
+                theme: "Dì Shuǐ Shī",
+                meaning: "Organisation collective, discipline martiale, mobilisation unifiée",
+                interpretation: "L'heure de l'organisation collective a sonné. Rassemblez les énergies vers un objectif commun. Cette période requiert discipline, stratégie et leadership visionnaire. Comme une armée bien entraînée, chaque élément doit jouer son rôle. Soyez un leader qui inspire plutôt qu'un tyran qui commande. L'unité crée la force invincible.",
+                advice: "Organisez. Leadez avec vision. Coordonnez les énergies. L'unité crée la victoire.",
+                warning: "L'autoritarisme excessive crée la révolte. Leadez par l'exemple et la vision."
+            },
+            8: {
+                name: "Alliance",
+                tarot: "As de Coupes",
+                image: "比",
+                theme: "Shuǐ Dì Bǐ",
+                meaning: "Union harmonieuse, fraternité authentique, alliance sacrée",
+                interpretation: "L'union authentique se manifeste. C'est le moment des associations sincères basées sur des principes partagés, non sur l'intérêt personnel. Cette alliance renforce chaque partie et crée une force plus grande que l'individuel. Cultivez la loyauté, la transparence et la mutualité. Une véritable alliance transcende l'intérêt individuel.",
+                advice: "Créez des alliances sincères. Soyez loyal et transparent. L'union crée la force.",
+                warning: "Les alliances fondées sur l'intérêt seul échouent. Cherchez le vrai partage."
+            },
+            9: {
+                name: "Petit Apprivoisement",
+                tarot: "Roi d'Épées",
+                image: "小畜",
+                theme: "Féng Tiān Xiǎo Xù",
+                meaning: "Retenue délibérée, pudeur stratégique, modération productive",
+                interpretation: "Une retenue délibérée est demandée. Ce n'est pas de la faiblesse mais une stratégie de force contenue. Comme un archer qui tend son arc avant de lâcher la flèche, vous accumulez l'énergie. Cette période d'attente et de modération crée les conditions pour une libération ultérieure plus puissante.",
+                advice: "Retenez votre force. Soyez modéré. L'énergie accumulée crée la puissance.",
+                warning: "La retenue excessive paralysie. Agissez quand vient le moment."
+            },
+            10: {
+                name: "Démarche",
+                tarot: "Reine d'Épées",
+                image: "履",
+                theme: "Tiān Dì Lǚ",
+                meaning: "Progression consciente, marche intentionnelle, chaque pas compte",
+                interpretation: "Avancez consciemment, un pas à la fois. Chaque action compte. C'est une période de progression lente mais sûre. Ne précipitez pas, ne traînez pas. Trouvez le rythme juste. Votre destinée se construit par une série de petits pas intentionnels, non par des grands sauts reckless.",
+                advice: "Avancez pas à pas. Soyez conscient de chaque action. Le chemin se construit.",
+                warning: "L'impatience brise l'équilibre. La hâte crée les accidents."
+            },
+            11: {
+                name: "Prospérité",
+                tarot: "Reine de Deniers",
+                image: "泰",
+                theme: "Dì Tiān Tài",
+                meaning: "Harmonie céleste, paix universelle, échange bénéfique",
+                interpretation: "L'harmonie parfaite du Ciel et de la Terre. Toutes les conditions s'alignent favorablement. C'est une période d'échange mutuel bénéfique, de paix profonde et de bénédiction. Savourez cette prospérité rare, mais restez vigilant car tout change. Utilisez ce moment auspicieux pour consolider vos gains, pour partager votre richesse, pour apprendre les leçons de l'harmonie.",
+                advice: "Savourer la prospérité. Partager les bienfaits. Consolidez votre position.",
+                warning: "La prospérité passe. Préparez-vous au changement. Soyez généreux."
+            },
+            12: {
+                name: "Adversité",
+                tarot: "2 d'Épées",
+                image: "否",
+                theme: "Tiān Dì Pǐ",
+                meaning: "Incompatibilité des forces, stagnation énergétique, séparation nécessaire",
+                interpretation: "Ciel et Terre se séparent. Il existe une stagnation profonde, une incompatibilité apparente des forces. Obstacles surgissent, bloquant le progrès. Mais ce n'est pas le moment d'agir avec force. C'est le moment de réfléchir profondément, de chercher une nouvelle approche, de se préparer silencieusement. L'adversité forge l'âme. Persévérez avec stratégie et non avec violence.",
+                advice: "Réfléchissez profondément. Cherchez une nouvelle approche. La patience forge.",
+                warning: "La force brute échouera. L'introspection est votre force."
+            },
+            29: {
+                name: "Ravins",
+                tarot: "III · L'Impératrice",
+                image: "坎",
+                theme: "Kǎn Zhòngkǎ",
+                meaning: "Profondeur de l'inconscient, abîmes de l'âme, peurs primordiales",
+                interpretation: "L'eau répétée symbolise la profondeur insondable de l'inconscient. Vous êtes face à l'abîme, aux peurs profondes, aux parties cachées de votre âme. C'est une période d'introspection intense et courageuse. Descendez dans les ravins intérieurs sans crainte excessif. Cette plongée révèlera des richesses cachées, une connaissance transformatrice, une sagesse intérieure.",
+                advice: "Descendez en vous avec courage. Confrontez vos ombres. La sagesse attend.",
+                warning: "La peur excessive vous paralysera. Avancez avec détermination."
+            },
+            30: {
+                name: "Lumière",
+                tarot: "IV · L'Empereur",
+                image: "离",
+                theme: "Lí Zhònghuǒ",
+                meaning: "Illumination continue, clarté brillante, chaleur transformatrice",
+                interpretation: "Le feu répété symbolise une illumination continue et intense. Votre intellect brille, votre passion s'enflamme, la clarté éclaire vos chemins. Mais attention : cette lumière dépend du combustible constant. C'est une période d'intensité, de brillance, de chaleur creative. Utilisez cette clarté pour voir vos chemins avec précision. Restez conscient que vous avez besoin de sources d'énergie continuelles.",
+                advice: "Brillez de clarté. Utilisez l'illumination pour voir les chemins. Nourrissez votre feu.",
+                warning: "Le feu peut consumer. Ne brûlez pas vos énergies essentielles."
+            },
+            51: {
+                name: "Ébranlement",
+                tarot: "V · Le Pape",
+                image: "震",
+                theme: "Zhèn Zhòngzhèn",
+                meaning: "Choc électrique de la conscience, réveil soudain, transformation radicale",
+                interpretation: "Le tonnerre répété symbolise une électricité cosmique qui vous traverse. C'est un choc transformateur, un réveil brutal à la conscience nouvelle. Cet ébranlement peut être douloureux, mais il est salutaire et nécessaire. Acceptez ce secoue comme un catalyseur de croissance spirituelle. Après le choc vient la clarté nouvelle.",
+                advice: "Acceptez l'ébranlement. Laissez-vous transformer. La clarté nouvelle vient.",
+                warning: "La résistance au choc prolonge la douleur. Acceptez et grandissez."
+            },
+            52: {
+                name: "Stabiliser",
+                tarot: "VIII · La Justice",
+                image: "艮",
+                theme: "Gèn Zhònggen",
+                meaning: "Immobilité absolue, méditation profonde, consolidation intérieure",
+                interpretation: "La montagne répétée symbolise l'immobilité complète et la stabilité inébranlable. C'est le repos absolu après le mouvement, la méditation profonde, la consolidation intérieure. Cessez l'action extérieure, entrez en silence contemplatif. Cette période est pour digérer les expériences, pour consolider votre être interne. Comme une montagne, développez une stabilité totalement inébranlable.",
+                advice: "Cessez l'action. Méditez profondément. Consolidez votre intériorité.",
+                warning: "L'immobilité excessive peut devenir rigidité. Restez flexible."
+            },
+            57: {
+                name: "Se Modeler",
+                tarot: "VII · Le Chariot",
+                image: "巽",
+                theme: "Xùn Zhòngxun",
+                meaning: "Pénétration douce, adaptation fluide, influence imperceptible",
+                interpretation: "Le vent répété symbolise la pénétration douce et irrésistible. Votre influence n'est pas brute mais subtile, pénétrante, totalement irrésistible. C'est l'art de la transformation lente et imperceptible, de l'adaptation fluide aux circonstances. Guidez sans forcer, influencez sans blesser. Votre puissance réside dans la non-résistance absolue et la flexibilité totale.",
+                advice: "Soyez flexible et doux. Pénétrez avec douceur. L'influence invisible est plus forte.",
+                warning: "La douceur excessive peut sembler faiblesse. Soyez doux mais ferme."
+            },
+            58: {
+                name: "Échanger",
+                tarot: "VI · L'Amoureux",
+                image: "兑",
+                theme: "Duì Zhòngdui",
+                meaning: "Allégresse absolue, échange joyeux, union festive",
+                interpretation: "Le lac répété symbolise l'allégresse totale et l'échange joyeux. C'est le moment de la célébration authentique, de la communion festive sincère. Les cœurs s'ouvrent naturellement, le partage coule sans effort. Cette harmonie sociale apporte une satisfaction mutuelle profonde. Savourez l'échange joyeux avec autrui. C'est la connexion authentique.",
+                advice: "Célébrez la joie. Échangez avec ouverture. La convivialité guérit.",
+                warning: "La joie excessive peut perdre sa authenticité. Restez vrai."
+            },
+            63: {
+                name: "Déjà Traversé",
+                tarot: "10 de Coupes",
+                image: "既济",
+                theme: "Huǒ Shuǐ Jì",
+                meaning: "Complétude atteinte, apogée réalisé, succès consommé",
+                interpretation: "Vous avez atteint la complétude de votre projet ou phase de vie. Le succès est là, l'apogée est consommé. Mais attention : c'est exactement le moment où le changement commence à s'amorcer. Savourez votre accomplissement, mais restez conscient que cette période de culmination est transitoire. Préparez-vous déjà aux changements qui commencent.",
+                advice: "Savourez votre accomplissement. Mais préparez-vous au changement.",
+                warning: "Après le sommet vient la descente. C'est le cycle naturel."
+            },
+            64: {
+                name: "Pas Encore Traversé",
+                tarot: "6 de Bâtons",
+                image: "未济",
+                theme: "Huǒ Shuǐ Wèi Jì",
+                meaning: "Inachèvement productif, moment final imminent, ultime effort requis",
+                interpretation: "Vous êtes à l'aube de l'accomplissement total. Le moment final n'est pas encore venu, mais il est très proche. C'est l'inachèvement productif où l'effort final est cruciale pour franchir la ligne d'arrivée. Vous êtes extraordinairement proche du succès ; maintenez votre élan, affinez vos derniers efforts. Cet état de transition riche est le moment le plus prometteur.",
+                advice: "Maintenez votre élan. L'effort final vous amènera au succès complet.",
+                warning: "Abandonner maintenant serait tragique. Persévérez jusqu'au bout."
+            }
+        };
+
+        // Ajouter les autres hexagrammes (13-62 sauf 29, 30, 51, 52, 57, 58, 63, 64)
+        for (let i = 13; i <= 62; i++) {
+            if (![29, 30, 51, 52, 57, 58, 63, 64].includes(i)) {
+                HEXAGRAMS[i] = {
+                    name: `Hexagramme ${i}`,
+                    tarot: `Arcane ${i}`,
+                    image: sym(i),
+                    interpretation: `L'hexagramme ${i} révèle un aspect unique de la sagesse du Yi Ching. Consultez la ressource complète pour une interprétation détaillée.`,
+                    advice: `Méditez sur les énergies de cet hexagramme ${i}.`,
+                    warning: `Chaque hexagramme apporte une leçon. Soyez réceptif.`
+                };
+            }
+        }
+
+        const TRAITS = {
+            yang: { symbol: '━━━', name: 'Yang', meaning: 'Force, lumière, action' },
+            yin: { symbol: '━ ━', name: 'Yin', meaning: 'Réceptif, obscurité, repos' },
+            yChang: { symbol: '━━━⟳', name: 'Yang Changeant', meaning: 'Transformation active' },
+            yiChang: { symbol: '━ ━⟳', name: 'Yin Changeant', meaning: 'Transformation réceptive' }
+        };
+
+        let state = {
+            phase: 'start',
+            traits1: [],
+            traits2: [],
+            hexNum: null
+        };
+
+        function drawTrait() {
+            const choice = Math.random();
+            if (choice < 0.25) return 'yang';
+            if (choice < 0.5) return 'yin';
+            if (choice < 0.75) return 'yChang';
+            return 'yiChang';
+        }
+
+        function traitToIndex(trait) {
+            return (trait === 'yang' || trait === 'yChang') ? 1 : 0;
+        }
+
+        function calculateTrigram(traits) {
+            const line1 = traitToIndex(traits[0]);
+            const line2 = traitToIndex(traits[1]);
+            const line3 = traitToIndex(traits[2]);
+            return (line3 * 4) + (line2 * 2) + line1;
+        }
+
+        function sym(n) {
+            return String.fromCodePoint(0x4DC0 + n - 1);
+        }
+
+        function hasChangingTraits(t1, t2) {
+            return [...t1, ...t2].some(t => t === 'yChang' || t === 'yiChang');
+        }
+
+        function render() {
+            const content = document.getElementById('content');
+            const counter = document.getElementById('phaseCounter');
+
+            if (state.phase === 'start') {
+                counter.textContent = 'PHASE 0 : PRÉPARATION À LA CONSULTATION';
+                content.innerHTML = `
+                    <div class="initial-message">
+                        <div class="initial-emoji">🔮 ☯️ 🔮</div>
+                        <h2 class="initial-title">Oracle Complet du Yi Ching</h2>
+                        <p class="initial-text">
+                            Consultez les <strong>64 Hexagrammes</strong> du destin avec interprétations complètes et enrichies.
+                            Construisez votre hexagramme trait par trait, et recevez une guidance holistique profonde.
+                        </p>
+                        <div class="trait-legend" style="margin-top: 20px;">
+                            <div class="legend-item">⚏ (━━━) = Yang Stable</div>
+                            <div class="legend-item">⚌ (━ ━) = Yin Stable</div>
+                            <div class="legend-item legend-changing">⚍ (━━━⟳) = Yang Changeant</div>
+                            <div class="legend-item legend-changing">⚎ (━ ━⟳) = Yin Changeant</div>
+                        </div>
+                        <div class="instructions" style="margin-top: 20px;">
+                            <strong style="color: #FFD700;">Processus de Tirage :</strong>
+                            <div class="step">Tirez 3 traits pour construire le trigramme inférieur</div>
+                            <div class="step">Tirez 3 traits pour construire le trigramme supérieur</div>
+                            <div class="step">Recevez l'interprétation oraculaire complète</div>
+                            <div class="step">Les traits changeants (magenta) révèlent les zones de transformation</div>
+                        </div>
+                    </div>
+                    <button onclick="startPhase1()" style="margin-top: 30px;">🎲 ✦ Consulter l'Oracle ✦ 🎲</button>
+                `;
+            } else if (state.phase === 'tri1' || state.phase === 'tri2') {
+                const phaseNum = state.phase === 'tri1' ? 1 : 2;
+                const traits = state.phase === 'tri1' ? state.traits1 : state.traits2;
+                counter.textContent = `PHASE ${phaseNum} : CONSTRUCTION DU TRIGRAMME ${phaseNum}`;
+
+                let html = `
+                    <div class="main-grid">
+                        <div class="construction-zone">
+                            <div class="construction-title">Traits du Trigramme ${phaseNum}</div>
+                            <div class="traits-display">
+                `;
+
+                if (traits.length === 0) {
+                    html += `<p style="color: rgba(255,255,255,0.6); font-size: 0.95rem;">En attente du premier trait...</p></div>
+                            <button onclick="drawTraitStep()">🎲 Tirer le Trait ${traits.length + 1}</button>
+                    `;
+                } else {
+                    traits.forEach((t) => {
+                        const isChanging = t === 'yChang' || t === 'yiChang';
+                        html += `<div class="trait-line ${isChanging ? 'changing' : 'stable'}">${TRAITS[t].symbol}</div>`;
+                    });
+                    html += `</div>`;
+
+                    if (traits.length < 3) {
+                        html += `<p style="color: rgba(255,255,255,0.6); margin: 15px 0;">${traits.length}/3 traits</p>
+                                <button onclick="drawTraitStep()">🎲 Tirer le Trait ${traits.length + 1}</button>
+                        `;
+                    }
+                }
+
+                html += `</div></div>`;
+
+                if (traits.length === 1) {
+                    html += `
+                        <div class="construction-zone">
+                            <div class="construction-title">Choisir le Type du Trait 1</div>
+                            <div class="btn-options">
+                                <button class="btn-option" onclick="selectTraitVariant(0, 'yang')">⚏<br/>━━━</button>
+                                <button class="btn-option" onclick="selectTraitVariant(0, 'yin')">⚌<br/>━ ━</button>
+                                <button class="btn-option changing" onclick="selectTraitVariant(0, 'yChang')">⚍<br/>━━━⟳</button>
+                                <button class="btn-option changing" onclick="selectTraitVariant(0, 'yiChang')">⚎<br/>━ ━⟳</button>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                if (traits.length >= 3) {
+                    const trigIdx = calculateTrigram(traits);
+                    const trig = TRIGRAMS[trigIdx];
+                    html += `
+                        <div class="trigram-display">
+                            <div style="font-size: 0.9rem; color: #FFD700; text-transform: uppercase; margin-bottom: 10px;">Trigramme ${phaseNum}</div>
+                            <div class="trigram-symbol">${trig.symbol}</div>
+                            <div class="trigram-name">${trig.pinyin}</div>
+                            <div class="trigram-french">${trig.fr}</div>
+                            <div style="font-size: 0.85rem; color: rgba(255,255,255,0.6); margin-top: 8px;">${trig.desc}</div>
+                        </div>
+                    `;
+
+                    if (phaseNum === 1) {
+                        html += `<button onclick="startPhase2()" style="margin-top: 20px;">✦ Construire le Trigramme 2 ✦</button>`;
+                    } else {
+                        html += `<button onclick="showFinalHexagram()" style="margin-top: 20px;">✦ RÉVÉLER L'ORACLE FINAL ✦</button>`;
+                    }
+                }
+
+                content.innerHTML = html;
+            } else if (state.phase === 'final') {
+                counter.textContent = 'PHASE 3 : L\'ORACLE RÉVÉLÉ PAR L\'UNIVERS';
+                
+                const tri1Idx = calculateTrigram(state.traits1);
+                const tri2Idx = calculateTrigram(state.traits2);
+                const tri1 = TRIGRAMS[tri1Idx];
+                const tri2 = TRIGRAMS[tri2Idx];
+                
+                state.hexNum = GRID[tri1Idx][tri2Idx];
+                const hexData = HEXAGRAMS[state.hexNum] || {
+                    name: `Hexagramme ${state.hexNum}`,
+                    tarot: 'Arcane du Destin',
+                    interpretation: 'Cet hexagramme révèle les mystères du moment présent. Consultez une source complète pour l\'interprétation détaillée.'
+                };
+
+                const hasChanging = hasChangingTraits(state.traits1, state.traits2);
+
+                let html = `
+                    <div class="hexagram-final">
+                        <div style="font-size: 0.9rem; color: #FFD700; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 20px;">✦ L'ORACLE FINAL ✦</div>
+                        <div class="hexagram-symbol">${sym(state.hexNum)}</div>
+                        <div class="hexagram-title">${hexData.name}</div>
+                        <div class="hexagram-number">Hexagramme n°${state.hexNum}</div>
+
+                        <div class="hexagram-info">
+                            <div class="info-line">
+                                <span class="info-label">Arcane Tarot :</span> ${hexData.tarot}
+                            </div>
+                            <div class="info-line">
+                                <span class="info-label">Trigramme Inférieur :</span> ${tri1.symbol} ${tri1.pinyin} (${tri1.fr})
+                            </div>
+                            <div class="info-line">
+                                <span class="info-label">Trigramme Supérieur :</span> ${tri2.symbol} ${tri2.pinyin} (${tri2.fr})
+                            </div>
+                        </div>
+
+                        ${hasChanging ? `
+                            <div class="changing-indicator">
+                                <strong style="color: #FF00FF;">⚍ ⚎ TRAITS CHANGEANTS DÉTECTÉS ⚎ ⚍</strong><br/>
+                                <span style="color: #FFB6FF;">Zones de transformation active. L'univers appelle à l'évolution. Prêtez attention particulière à ces domaines de votre vie.</span>
+                            </div>
+                        ` : ''}
+
+                        <div class="oracle-interpretation">
+                            <div class="oracle-section">
+                                <div class="oracle-section-title">✨ Interprétation Oraculaire ✨</div>
+                                <div class="oracle-text">${hexData.interpretation}</div>
+                            </div>
+
+                            ${hexData.advice ? `
+                                <div class="oracle-section">
+                                    <div class="oracle-section-title">🌟 Conseil de l'Oracle</div>
+                                    <div class="oracle-text">${hexData.advice}</div>
+                                </div>
+                            ` : ''}
+
+                            ${hexData.warning ? `
+                                <div class="oracle-section">
+                                    <div class="oracle-section-title">⚠️ Mise en Garde</div>
+                                    <div class="oracle-text">${hexData.warning}</div>
+                                </div>
+                            ` : ''}
+
+                            <div class="oracle-section">
+                                <div class="oracle-section-title">🔮 Guidance Mystique Personnalisée</div>
+                                <div class="oracle-text">
+                                    <strong style="color: #FFD700;">Votre moment présent</strong> est gouverné par l'interaction entre <strong>${tri1.fr}</strong> (fondement) 
+                                    et <strong>${tri2.fr}</strong> (manifestation). L'équilibre entre ces forces détermine votre chemin. 
+                                    ${hasChanging ? `<em style="color: #FF00FF;">Les traits changeants indiquent que vous êtes en période de transformation profonde.</em>` : ''}
+                                    Écoutez l'univers, suivez les signes subtils, et acceptez la sagesse profonde que cet oracle révèle à votre conscience.
+                                </div>
+                            </div>
+                        </div>
+
+                        <button onclick="reset()" style="margin-top: 20px;">🔄 ✦ Consulter un Nouvel Oracle ✦ 🔄</button>
+                    </div>
+                `;
+
+                content.innerHTML = html;
+            }
+        }
+
+        function drawTraitStep() {
+            const phase = state.phase === 'tri1' ? 'traits1' : 'traits2';
+            const trait = drawTrait();
+            state[phase].push(trait);
+            render();
+        }
+
+        function selectTraitVariant(idx, variant) {
+            const phase = state.phase === 'tri1' ? 'traits1' : 'traits2';
+            state[phase][idx] = variant;
+            render();
+        }
+
+        function startPhase1() {
+            state.phase = 'tri1';
+            state.traits1 = [];
+            render();
+        }
+
+        function startPhase2() {
+            state.phase = 'tri2';
+            state.traits2 = [];
+            render();
+        }
+
+        function showFinalHexagram() {
+            state.phase = 'final';
+            render();
+        }
+
+        function reset() {
+            state = {
+                phase: 'start',
+                traits1: [],
+                traits2: [],
+                hexNum: null
+            };
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            render();
+        }
+
+        render();
+
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js').catch(err => console.log('SW'));
+        }
+    </script>
+</body>
+</html>
