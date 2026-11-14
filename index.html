@@ -779,7 +779,26 @@
         function hasChangingTraits(t1, t2) {
             return [...t1, ...t2].some(t => t === 'yChang' || t === 'yiChang');
         }
+        
+const TABLE_URL = 'https://albator-78.github.io/modalyiking/';
 
+// Hexagramme relatif : chaque trait changeant s'inverse
+function hexRelatif() {
+  const flip = t => t === 'yChang' ? 'yin' : t === 'yiChang' ? 'yang' : t;
+  const lo = calculateTrigram(state.traits1.map(flip));
+  const up = calculateTrigram(state.traits2.map(flip));
+  return GRID[lo][up];
+}
+
+function lienTable() {
+  const u = new URL(TABLE_URL);
+  u.searchParams.set('hex', state.hexNum);
+  if (hasChangingTraits(state.traits1, state.traits2)) {
+    const r = hexRelatif();
+    if (r !== state.hexNum) u.searchParams.set('vers', r);
+  }
+  return u.toString();
+}
         function render() {
             const content = document.getElementById('content');
             const counter = document.getElementById('phaseCounter');
