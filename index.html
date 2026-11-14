@@ -932,6 +932,8 @@ function lienTable() {
                             </div>
                         </div>
 
+                        ${hasChanging ? `<div class="info-line"><span class="info-label">Hexagramme relatif :</span> n°${hexRelatif()}</div>` : ''}
+
                         ${hasChanging ? `
                             <div class="changing-indicator">
                                 <strong style="color: #FF00FF;">⚍ ⚎ TRAITS CHANGEANTS DÉTECTÉS ⚎ ⚍</strong><br/>
