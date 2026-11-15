@@ -1021,6 +1021,7 @@ function lienTable() {
                 hexNum: null
             };
             window.scrollTo({ top: 0, behavior: 'smooth' });
+            history.replaceState(null, '', location.pathname);
             render();
         }
 
