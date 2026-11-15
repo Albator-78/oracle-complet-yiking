@@ -1024,6 +1024,35 @@ function lienTable() {
             render();
         }
 
+        // Reconstitue 6 traits à partir d'un n° d'hexagramme (et d'un relatif éventuel)
+function traitsFromHex(n, m) {
+    const pos = h => {
+        for (let lo = 0; lo < 8; lo++)
+            for (let up = 0; up < 8; up++)
+                if (GRID[lo][up] === h) return [lo, up];
+    };
+    const bits = h => {
+        const [lo, up] = pos(h);
+        return [(lo>>2)&1, (lo>>1)&1, lo&1, (up>>2)&1, (up>>1)&1, up&1];
+    };
+    const a = bits(n);
+    const b = m ? bits(m) : a;
+    // trait différent entre primaire et relatif = trait changeant
+    const t = a.map((v, i) => v === b[i] ? (v ? 'yang' : 'yin') : (v ? 'yChang' : 'yiChang'));
+    return [t.slice(0, 3), t.slice(3)];
+}
+
+(function () {
+    const q = new URLSearchParams(location.search);
+    const n = parseInt(q.get('hex'), 10);
+    const m = parseInt(q.get('vers'), 10);
+    if (!(n >= 1 && n <= 64)) return;
+    const [t1, t2] = traitsFromHex(n, (m >= 1 && m <= 64 && m !== n) ? m : null);
+    state.traits1 = t1;
+    state.traits2 = t2;
+    state.phase = 'final';
+})();
+
         render();
 
         if ('serviceWorker' in navigator) {
