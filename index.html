@@ -1102,6 +1102,96 @@ function lienWengu() {
 
   return `http://wengu.tartarie.com/wg/wengu.php?l=Yijing&tire=${tire}&no=${state.hexNum}&lang=fr`;
 }
+
+function analyserTarotPositionnel(traits1, traits2, hexPrim, hexRel) {
+  const COULEURS = {
+    yiChang: { val: 6, famille: 'Coupes',  element: 'Eau',   icone: '🏆', sens: 'émotion arrivée à maturité, bascule intuitive' },
+    yang:    { val: 7, famille: 'Épées',   element: 'Air',   icone: '⚔️', sens: 'discernement droit, structure mentale stable' },
+    yin:     { val: 8, famille: 'Deniers', element: 'Terre', icone: '🪙', sens: 'ancrage concret, stabilité matérielle' },
+    yChang:  { val: 9, famille: 'Bâtons',  element: 'Feu',   icone: '🪄', sens: 'feu créateur à son comble, transformation active' }
+  };
+
+  const POSITIONS = [
+    "1re ligne (Racine / Base)",
+    "2e ligne (Cœur intime)",
+    "3e ligne (Seuil intérieur)",
+    "4e ligne (Entrée relationnelle)",
+    "5e ligne (Maîtrise / Axe)",
+    "6e ligne (Sommet / Conscience)"
+  ];
+
+  const t1 = traits1.map(t => COULEURS[t]);
+  const t2 = traits2.map(t => COULEURS[t]);
+  const tous = [...t1, ...t2];
+
+  const codeTire = tous.map(c => c.val).join('');
+  const sommeTotale = tous.reduce((acc, c) => acc + c.val, 0);
+
+  // Comptage par famille du Tarot
+  const compte = { Coupes: 0, Épées: 0, Deniers: 0, Bâtons: 0 };
+  tous.forEach(c => compte[c.famille]++);
+
+  const dominantes = Object.entries(compte)
+    .filter(([, n]) => n >= 2)
+    .sort((a, b) => b[1] - a[1])
+    .map(([fam, n]) => `${fam} (${n}/6)`);
+
+  const absentes = Object.entries(compte)
+    .filter(([, n]) => n === 0)
+    .map(([fam]) => fam);
+
+  // Signature des trigrammes
+  const sigTrig = (arr) => arr.map(c => `${c.val} (${c.famille})`).join(' · ');
+
+  // Détail des lignes mutables (6 = Coupes, 9 = Bâtons)
+  const mutations = [];
+  tous.forEach((c, i) => {
+    if (c.val === 6 || c.val === 9) {
+      mutations.push(
+        `• <strong>${POSITIONS[i]} — ${c.val} (${c.icone} ${c.famille} · ${c.element})</strong> : ${c.sens}.`
+      );
+    }
+  });
+
+  const lamePrim = HEXAGRAMS[hexPrim]?.tarot || `Hexagramme ${hexPrim}`;
+  const lameRel  = HEXAGRAMS[hexRel]?.tarot  || `Hexagramme ${hexRel}`;
+
+  let html = `
+    <p><strong>Code numérique :</strong> <code>${codeTire}</code> (Tension : ${sommeTotale} / 54)</p>
+    <p style="margin-top:8px;">
+      <strong>Trigramme inférieur (Intérieur) :</strong> ${sigTrig(t1)}<br/>
+      <strong>Trigramme supérieur (Extérieur) :</strong> ${sigTrig(t2)}
+    </p>
+    <p style="margin-top:8px;">
+      <strong>Répartition des Enseignes :</strong>
+      🏆 Coupes : ${compte.Coupes} · ⚔️ Épées : ${compte.Épées} · 🪙 Deniers : ${compte.Deniers} · 🪄 Bâtons : ${compte.Bâtons}<br/>
+      ${dominantes.length ? `<strong>Dominante(s) :</strong> ${dominantes.join(', ')}` : '<strong>Équilibre :</strong> Répartition homogène'}
+      ${absentes.length ? ` · <strong>En retrait :</strong> ${absentes.join(', ')}` : ''}
+    </p>
+  `;
+
+  if (mutations.length > 0) {
+    html += `
+      <div style="margin-top:12px;">
+        <strong>Mutations actives (6 · Coupes &amp; 9 · Bâtons) :</strong><br/>
+        ${mutations.join('<br/>')}
+      </div>
+      <p style="margin-top:12px;">
+        <strong>Dynamique Tarologique :</strong> La lame <em>${lamePrim}</em> se transforme vers <em>${lameRel}</em>.
+      </p>
+    `;
+  } else {
+    html += `
+      <p style="margin-top:12px;">
+        <strong>Stabilité Tarologique (7 · Épées &amp; 8 · Deniers) :</strong> Aucune mutation ; la lame <em>${lamePrim}</em> s'ancre durablement sans basculement.
+      </p>
+    `;
+  }
+
+  return html;
+}
+
+        
         
 
 function lienTable() {
