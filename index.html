@@ -1350,6 +1350,13 @@ function lienTable() {
                                 <div class="oracle-section-title">✨ Interprétation Oraculaire ✨</div>
                                 <div class="oracle-text">${hexData.interpretation}</div>
                             </div>
+                            <div class="oracle-section">
+    <div class="oracle-section-title">🃏 Lecture Positionnelle &amp; Familles du Tarot</div>
+    <div class="oracle-text">
+        ${analyserTarotPositionnel(state.traits1, state.traits2, state.hexNum, hexRelatif())}
+    </div>
+</div>
+
 
                             ${hexData.advice ? `
                                 <div class="oracle-section">
