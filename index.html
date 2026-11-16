@@ -1089,6 +1089,21 @@ function hexRelatif() {
   return GRID[lo][up];
 }
 
+function lienWengu() {
+  const mapWengu = {
+    yiChang: '6', // Yin mutable
+    yang:    '7', // Yang stable
+    yin:     '8', // Yin stable
+    yChang:  '9'  // Yang mutable
+  };
+  const tire = [...state.traits1, ...state.traits2]
+    .map(t => mapWengu[t])
+    .join('');
+
+  return `http://wengu.tartarie.com/wg/wengu.php?l=Yijing&tire=${tire}&no=${state.hexNum}&lang=fr`;
+}
+        
+
 function lienTable() {
   const u = new URL(TABLE_URL);
   u.searchParams.set('hex', state.hexNum);
