@@ -1407,10 +1407,11 @@ function drawTraitStep() {
         }
 
         function startPhase1() {
-            state.phase = 'tri1';
-            state.traits1 = [];
-            render();
-        }
+    state.phase = 'tri1';
+    state.traits1 = [];
+    state.journal = [];
+    render();
+}
 
         function startPhase2() {
             state.phase = 'tri2';
