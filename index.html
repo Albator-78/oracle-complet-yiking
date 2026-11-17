@@ -221,6 +221,10 @@ function lienTable() {
   if (hasChanging()) { const r = hexRelatif(); if (r !== state.hexNum) u.searchParams.set('vers', r); }
   return u.toString();
 }
+  const TAROT_BAGUA_URL =
+  'https://albator-78.github.io/tarot-bagua/';
+
+  
 function lienWengu() {
   const code = { yiChang:'6', yang:'7', yin:'8', yChang:'9' };
   return `http://wengu.tartarie.com/wg/wengu.php?l=Yijing&tire=${tousTraits().map(t => code[t]).join('')}&no=${state.hexNum}&lang=fr`;
