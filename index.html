@@ -1215,6 +1215,10 @@ function lienTable() {
                             <div class="step">Les traits changeants (magenta) révèlent les zones de transformation</div>
                         </div>
                     </div>
+                   <div class="btn-options" style="max-width:500px;margin:25px auto 0;">
+    <button class="btn-option ${state.mode === 'pieces' ? 'selected' : ''}" onclick="setMode('pieces')">🪙 Trois pièces<br/><small>rapide</small></button>
+    <button class="btn-option ${state.mode === 'achillee' ? 'selected' : ''}" onclick="setMode('achillee')">🌿 Tiges d'achillée<br/><small>traditionnel</small></button>
+</div> 
                     <button onclick="startPhase1()" style="margin-top: 30px;">🎲 ✦ Consulter l'Oracle ✦ 🎲</button>
                 `;
             } else if (state.phase === 'tri1' || state.phase === 'tri2') {
