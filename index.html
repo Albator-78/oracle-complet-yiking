@@ -1425,16 +1425,11 @@ function drawTraitStep() {
         }
 
         function reset() {
-            state = {
-                phase: 'start',
-                traits1: [],
-                traits2: [],
-                hexNum: null
-            };
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            history.replaceState(null, '', location.pathname);
-            render();
-        }
+    state = { phase: 'start', mode: state.mode, traits1: [], traits2: [], hexNum: null, journal: [] };
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    history.replaceState(null, '', location.pathname);
+    render();
+}
 
         // Reconstitue 6 traits à partir d'un n° d'hexagramme (et d'un relatif éventuel)
 function traitsFromHex(n, m) {
