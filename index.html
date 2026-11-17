@@ -221,6 +221,22 @@ function lienTable() {
   if (hasChanging()) { const r = hexRelatif(); if (r !== state.hexNum) u.searchParams.set('vers', r); }
   return u.toString();
 }
+  function lienTarotBagua() {
+  const u = new URL(TAROT_BAGUA_URL);
+
+  u.searchParams.set('hex', state.hexNum);
+
+  if (hasChanging()) {
+    const relatif = hexRelatif();
+
+    if (relatif !== state.hexNum) {
+      u.searchParams.set('vers', relatif);
+    }
+  }
+
+  return u.toString();
+}
+
   const TAROT_BAGUA_URL =
   'https://albator-78.github.io/tarot-bagua/';
 
