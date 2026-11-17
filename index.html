@@ -1390,12 +1390,15 @@ function lienTable() {
 
         
 
-        function drawTraitStep() {
-            const phase = state.phase === 'tri1' ? 'traits1' : 'traits2';
-            const trait = drawTrait();
-            state[phase].push(trait);
-            render();
-        }
+        function setMode(m) { state.mode = m; render(); }
+
+function drawTraitStep() {
+    const phase = state.phase === 'tri1' ? 'traits1' : 'traits2';
+    const tirage = state.mode === 'achillee' ? tirerAchillee() : tirerPieces();
+    state[phase].push(VALEUR_TO_TRAIT[tirage.valeur]);
+    state.journal.push({ ...tirage, mode: state.mode });
+    render();
+}
 
         function selectTraitVariant(idx, variant) {
             const phase = state.phase === 'tri1' ? 'traits1' : 'traits2';
