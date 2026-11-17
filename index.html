@@ -499,15 +499,16 @@
     <script>
         // ========== DONNÉES TRIGRAMMES ==========
         const TRIGRAMS = [
-            { index: 0, symbol: '☷', pinyin: 'Kūn', fr: 'Terre', desc: 'Réceptif, stable, mère' },
-            { index: 1, symbol: '☶', pinyin: 'Gèn', fr: 'Montagne', desc: 'Immobilité, repos, arrêt' },
-            { index: 2, symbol: '☵', pinyin: 'Kǎn', fr: 'Eau', desc: 'Profondeur, danger, abîme' },
-            { index: 3, symbol: '☴', pinyin: 'Xùn', fr: 'Vent', desc: 'Pénétration, douceur, grâce' },
-            { index: 4, symbol: '☳', pinyin: 'Zhèn', fr: 'Tonnerre', desc: 'Mouvement, choc, éveil' },
-            { index: 5, symbol: '☲', pinyin: 'Lí', fr: 'Feu', desc: 'Clarté, chaleur, illumination' },
-            { index: 6, symbol: '☱', pinyin: 'Duì', fr: 'Lac', desc: 'Joie, échange, convivialité' },
-            { index: 7, symbol: '☰', pinyin: 'Qiàn', fr: 'Ciel', desc: 'Créatif, actif, père, force' }
-        ];
+    { index: 0, symbol: '☷', pinyin: 'Kūn', fr: 'Terre', desc: 'Réceptif, stable, mère', element: 'Terre', emoji: '🟫', direction: 'Sud-Ouest' },
+    { index: 1, symbol: '☶', pinyin: 'Gèn', fr: 'Montagne', desc: 'Immobilité, repos, arrêt', element: 'Terre', emoji: '🟫', direction: 'Nord-Est' },
+    { index: 2, symbol: '☵', pinyin: 'Kǎn', fr: 'Eau', desc: 'Profondeur, danger, abîme', element: 'Eau', emoji: '💧', direction: 'Nord' },
+    { index: 3, symbol: '☴', pinyin: 'Xùn', fr: 'Vent', desc: 'Pénétration, douceur, grâce', element: 'Bois', emoji: '🌳', direction: 'Sud-Est' },
+    { index: 4, symbol: '☳', pinyin: 'Zhèn', fr: 'Tonnerre', desc: 'Mouvement, choc, éveil', element: 'Bois', emoji: '🌳', direction: 'Est' },
+    { index: 5, symbol: '☲', pinyin: 'Lí', fr: 'Feu', desc: 'Clarté, chaleur, illumination', element: 'Feu', emoji: '🔥', direction: 'Sud' },
+    { index: 6, symbol: '☱', pinyin: 'Duì', fr: 'Lac', desc: 'Joie, échange, convivialité', element: 'Métal', emoji: '⚪', direction: 'Ouest' },
+    { index: 7, symbol: '☰', pinyin: 'Qián', fr: 'Ciel', desc: 'Créatif, actif, père, force', element: 'Métal', emoji: '⚪', direction: 'Nord-Ouest' }
+];
+
 
         // ========== GRILLE 8×8 ==========
         const GRID = [
