@@ -1054,13 +1054,27 @@ Object.assign(HEXAGRAMS, {
     journal: []          // un tirage par ligne : { valeur, detail, mode }
 };
 
-        function drawTrait() {
-            const choice = Math.random();
-            if (choice < 0.25) return 'yang';
-            if (choice < 0.5) return 'yin';
-            if (choice < 0.75) return 'yChang';
-            return 'yiChang';
-        }
+        // 49 tiges, trois « changements » : on retire 5 ou 9, puis 4 ou 8, puis 4 ou 8
+function tirerAchillee() {
+    const c1 = Math.random() < 0.75 ? 5 : 9;
+    const c2 = Math.random() < 0.5 ? 4 : 8;
+    const c3 = Math.random() < 0.5 ? 4 : 8;
+    return { valeur: (49 - c1 - c2 - c3) / 4, detail: [c1, c2, c3] };
+}
+
+function libelleTirage(e) {
+    if (!e) return '';
+    return e.mode === 'achillee'
+        ? `tiges : ${e.detail.join(' · ')} → ${e.valeur}`
+        : `${e.detail.map(v => (v === 3 ? 'face' : 'pile')).join(' · ')} → ${e.valeur}`;
+}
+
+function lignesMutantes() {
+    return [...state.traits1, ...state.traits2]
+        .map((t, i) => (t === 'yChang' || t === 'yiChang') ? i + 1 : 0)
+        .filter(Boolean);
+}
+
 
         function traitToIndex(trait) {
             return (trait === 'yang' || trait === 'yChang') ? 1 : 0;
