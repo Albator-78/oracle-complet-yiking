@@ -1425,9 +1425,12 @@ function drawTraitStep() {
         }
 
         function showFinalHexagram() {
-            state.phase = 'final';
-            render();
-        }
+    state.phase = 'final';
+    render(); // calcule state.hexNum
+    const p = new URLSearchParams({ hex: state.hexNum });
+    if (hasChangingTraits(state.traits1, state.traits2)) p.set('vers', hexRelatif());
+    history.replaceState(null, '', '?' + p);
+}
 
         function reset() {
     state = { phase: 'start', mode: state.mode, traits1: [], traits2: [], hexNum: null, journal: [] };
