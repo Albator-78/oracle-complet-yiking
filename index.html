@@ -1099,12 +1099,11 @@ function lignesMutantes() {
 const TABLE_URL = 'https://albator-78.github.io/modalyiking/';
 
 // Hexagramme relatif : chaque trait changeant s'inverse
-function hexRelatif() {
-  const flip = t => t === 'yChang' ? 'yin' : t === 'yiChang' ? 'yang' : t;
-  const lo = calculateTrigram(state.traits1.map(flip));
-  const up = calculateTrigram(state.traits2.map(flip));
-  return GRID[lo][up];
-}
+${hasChanging ? (() => {
+    const r = hexRelatif(), d = HEXAGRAMS[r];
+    return `<div class="info-line"><span class="info-label">Lignes mutantes :</span> ${lignesMutantes().join(', ')} (en partant du bas)</div>
+            <div class="info-line"><span class="info-label">Hexagramme relatif :</span> ${sym(r)} n°${r} — ${d.name} (${d.image})</div>`;
+})() : ''}
 
 function lienWengu() {
   const mapWengu = {
