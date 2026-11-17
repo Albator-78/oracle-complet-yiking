@@ -223,7 +223,7 @@ function lienTable() {
 }
 function lienWengu() {
   const code = { yiChang:'6', yang:'7', yin:'8', yChang:'9' };
-  return `https://wengu.tartarie.com/wg/wengu.php?l=Yijing&tire=${tousTraits().map(t => code[t]).join('')}&no=${state.hexNum}&lang=fr`;
+  return `http://wengu.tartarie.com/wg/wengu.php?l=Yijing&tire=${tousTraits().map(t => code[t]).join('')}&no=${state.hexNum}&lang=fr`;
 }
 function lienPartage() {
   const p = new URLSearchParams({ hex: state.hexNum });
