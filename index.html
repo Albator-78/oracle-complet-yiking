@@ -1238,10 +1238,12 @@ function lienTable() {
                             <button onclick="drawTraitStep()">🎲 Tirer le Trait ${traits.length + 1}</button>
                     `;
                 } else {
-                    traits.forEach((t) => {
-                        const isChanging = t === 'yChang' || t === 'yiChang';
-                        html += `<div class="trait-line ${isChanging ? 'changing' : 'stable'}">${TRAITS[t].symbol}</div>`;
-                    });
+                    traits.forEach((t, i) => {
+    const isChanging = t === 'yChang' || t === 'yiChang';
+    const e = state.journal[(phaseNum === 1 ? 0 : 3) + i];
+    html += `<div class="trait-line ${isChanging ? 'changing' : 'stable'}">${TRAITS[t].symbol}
+        <div style="font-family:Georgia,serif;font-size:.7rem;letter-spacing:1px;font-weight:normal">${libelleTirage(e)}</div></div>`;
+});
                     html += `</div>`;
 
                     if (traits.length < 3) {
