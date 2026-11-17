@@ -1104,6 +1104,57 @@ function lienWengu() {
   return `http://wengu.tartarie.com/wg/wengu.php?l=Yijing&tire=${tire}&no=${state.hexNum}&lang=fr`;
 }
 
+const WUXING_CYCLES = {
+    'Bois':  { nourrit: 'Feu',   controle: 'Terre' },
+    'Feu':   { nourrit: 'Terre', controle: 'Métal' },
+    'Terre': { nourrit: 'Métal', controle: 'Eau' },
+    'Métal': { nourrit: 'Eau',   controle: 'Bois' },
+    'Eau':   { nourrit: 'Bois',  controle: 'Feu' }
+};
+
+function getCodes6789(traits1, traits2) {
+    const mapCode = { yiChang: 6, yang: 7, yin: 8, yChang: 9 };
+    return [...traits1, ...traits2].map(t => mapCode[t]);
+}
+
+function relationElements(elBas, elHaut) {
+    if (elBas === elHaut) {
+        return `Harmonie d'identité (${elBas} sur ${elBas}) : résonance et amplification de l'élément.`;
+    }
+    if (WUXING_CYCLES[elBas].nourrit === elHaut) {
+        return `Cycle d'Engendrement (Shēng) : le fondement (${elBas}) nourrit et soutient la manifestation (${elHaut}).`;
+    }
+    if (WUXING_CYCLES[elHaut].nourrit === elBas) {
+        return `Cycle de Retour : l'extérieur (${elHaut}) ressource et alimente la base intérieure (${elBas}).`;
+    }
+    if (WUXING_CYCLES[elBas].controle === elHaut) {
+        return `Cycle de Contrôle (Kè) : l'élan intérieur (${elBas}) maîtrise et canalise l'extérieur (${elHaut}).`;
+    }
+    if (WUXING_CYCLES[elHaut].controle === elBas) {
+        return `Cycle de Contrainte : le contexte extérieur (${elHaut}) freine ou met à l'épreuve la base (${elBas}).`;
+    }
+    return '';
+}
+
+function analyserWuXing(tri1, tri2, traits1, traits2) {
+    const codes = getCodes6789(traits1, traits2);
+    const dynamique = relationElements(tri1.element, tri2.element);
+    
+    // Vérification de la mutation élémentaire (si traits 6 ou 9)
+    let mutationTexte = "Aucun trait mutant (6 ou 9) : la structure élémentaire est fixe.";
+    if (codes.includes(6) || codes.includes(9)) {
+        const flip = t => t === 'yChang' ? 'yin' : t === 'yiChang' ? 'yang' : t;
+        const relTri1 = TRIGRAMS[calculateTrigram(traits1.map(flip))];
+        const relTri2 = TRIGRAMS[calculateTrigram(traits2.map(flip))];
+        mutationTexte = `Mutation (6/9) : passage de [${tri1.emoji} ${tri1.element} / ${tri2.emoji} ${tri2.element}] vers [${relTri1.emoji} ${relTri1.element} / ${relTri2.emoji} ${relTri2.element}].`;
+    }
+
+    return {
+        codesStr: codes.join(' - '),
+        dynamique,
+        mutationTexte
+    };
+}
 
 
   
