@@ -1046,11 +1046,13 @@ Object.assign(HEXAGRAMS, {
         };
 
         let state = {
-            phase: 'start',
-            traits1: [],
-            traits2: [],
-            hexNum: null
-        };
+    phase: 'start',
+    mode: 'pieces',      // 'pieces' | 'achillee'
+    traits1: [],
+    traits2: [],
+    hexNum: null,
+    journal: []          // un tirage par ligne : { valeur, detail, mode }
+};
 
         function drawTrait() {
             const choice = Math.random();
