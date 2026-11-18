@@ -80,6 +80,106 @@ button:focus-visible,.btn-table:focus-visible{outline:3px solid #fff;outline-off
 .journal{font-size:.82rem;color:rgba(255,255,255,.7);line-height:1.7;text-align:left}
 @media (max-width:600px){.hexagram-symbol{font-size:3.6rem}.hexagram-title{font-size:1.5rem}button{padding:12px 24px;font-size:.9rem}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+.tarot-synthesis{
+  margin:24px 0;
+  padding:22px;
+  border:2px solid rgba(255,215,0,.55);
+  border-radius:18px;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(95,40,120,.35),
+      rgba(15,52,96,.4)
+    );
+}
+
+.tarot-synthesis-title{
+  color:#FFD700;
+  font-size:1.25rem;
+  text-align:center;
+  margin-bottom:6px;
+}
+
+.tarot-synthesis-intro{
+  color:rgba(255,255,255,.7);
+  font-size:.86rem;
+  line-height:1.6;
+  text-align:center;
+  margin-bottom:18px;
+}
+
+.tarot-cards{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+}
+
+.tarot-card{
+  min-width:0;
+  padding:18px 14px;
+  border:1px solid rgba(255,215,0,.4);
+  border-radius:14px;
+  background:rgba(0,0,0,.25);
+  text-align:center;
+}
+
+.tarot-position{
+  color:#FFD700;
+  font-size:.8rem;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  margin-bottom:6px;
+}
+
+.tarot-arcane{
+  color:#fff;
+  font-size:1.2rem;
+  font-weight:bold;
+  margin:10px 0;
+}
+
+.tarot-function{
+  color:#FFB6FF;
+  font-size:.85rem;
+  line-height:1.5;
+  margin-bottom:12px;
+}
+
+.tarot-details{
+  padding-top:10px;
+  border-top:1px solid rgba(255,255,255,.12);
+  color:rgba(255,255,255,.65);
+  font-size:.76rem;
+  line-height:1.6;
+}
+
+.tarot-question{
+  margin-top:11px;
+  color:rgba(255,255,255,.88);
+  font-size:.82rem;
+  line-height:1.5;
+  font-style:italic;
+}
+
+.tarot-sequence{
+  margin-top:18px;
+  padding:14px;
+  color:#FFD700;
+  background:rgba(0,0,0,.25);
+  border-radius:10px;
+  font-weight:bold;
+  text-align:center;
+  line-height:1.6;
+}
+
+@media (max-width:760px){
+  .tarot-cards{
+    grid-template-columns:1fr;
+  }
+}
+
+  
 </style>
 </head>
 <body>
