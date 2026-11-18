@@ -779,7 +779,10 @@ function render() {
       ${h.meaning ? `<div class="hexagram-meaning">${h.meaning}</div>` : ''}
 
       <div class="hexagram-info">
-        ${h.tarot ? `<div class="info-line"><span class="info-label">Arcane de tarot :</span> ${h.tarot}</div>` : ''}
+        ${h.tarot ? `<div class="info-line"><span class="info-label">
+  Correspondance globale de l’hexagramme :
+</span>
+ ${h.tarot}</div>` : ''}
         <div class="info-line"><span class="info-label">Trigramme inférieur :</span> ${tri1.symbol} ${tri1.pinyin} (${tri1.fr})</div>
         <div class="info-line"><span class="info-label">Trigramme supérieur :</span> ${tri2.symbol} ${tri2.pinyin} (${tri2.fr})</div>
         <div class="info-line"><span class="info-label">Lignes, du bas vers le haut :</span> ${wx.codes}</div>
