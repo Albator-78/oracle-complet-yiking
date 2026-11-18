@@ -480,6 +480,65 @@ function calculerSyntheseTarotique() {
     ...traduirePaireEnArcane(paire, index)
   }));
 }
+function syntheseTarotiqueHTML() {
+  const synthese = calculerSyntheseTarotique();
+
+  if (!synthese) return '';
+
+  const cartes = synthese.map((carte, index) => `
+    <div class="tarot-card">
+      <div class="tarot-position">
+        ${index + 1}. ${carte.titre}
+      </div>
+
+      <div class="tarot-arcane">
+        ${carte.arcane}
+      </div>
+
+      <div class="tarot-function">
+        ${carte.sousTitre}
+      </div>
+
+      <div class="tarot-details">
+        Lignes ${index * 2 + 1} et ${index * 2 + 2} :
+        ${carte.valeurs.join(' · ')}
+        <br>
+        ${carte.digramme}
+        <br>
+        ${carte.mutation}
+      </div>
+
+      <div class="tarot-question">
+        ${carte.question}
+      </div>
+    </div>
+  `).join('');
+
+  const sequence = synthese
+    .map(carte => carte.arcane)
+    .join(' → ');
+
+  return `
+    <section class="tarot-synthesis">
+      <h3 class="tarot-synthesis-title">
+        🃏 Synthèse tarologique du tirage
+      </h3>
+
+      <p class="tarot-synthesis-intro">
+        Les six lignes sont réunies en trois digrammes successifs,
+        lus du bas vers le haut.
+      </p>
+
+      <div class="tarot-cards">
+        ${cartes}
+      </div>
+
+      <div class="tarot-sequence">
+        ${sequence}
+      </div>
+    </section>
+  `;
+}
 
   
 // ========== TIRAGES ==========
