@@ -144,6 +144,244 @@ const TRAITS = {
 };
 const estMutant = t => t === 'yChang' || t === 'yiChang';
 
+// ========== SYNTHÈSE TAROTIQUE ==========
+//
+// Chaque paire est lue du bas vers le haut :
+// paire 1 = lignes 1 et 2
+// paire 2 = lignes 3 et 4
+// paire 3 = lignes 5 et 6
+//
+// La nature Yin/Yang détermine le digramme.
+// La présence d'un 6 ou d'un 9 détermine la mutation.
+
+const TAROT_MATRIX_1 = {
+  aucune: {
+    taiYin:   'Le Bateleur',
+    shaoYin:  'La Papesse',
+    shaoYang: "L’Impératrice",
+    taiYang:  "L’Empereur"
+  },
+  premier: {
+    taiYin:   'Le Pape',
+    shaoYin:  "L’Amoureux",
+    shaoYang: 'Le Chariot',
+    taiYang:  'La Justice'
+  },
+  deuxieme: {
+    taiYin:   "L’Ermite",
+    shaoYin:  'La Roue de Fortune',
+    shaoYang: 'La Force',
+    taiYang:  'Le Pendu'
+  },
+  deux: {
+    taiYin:   'L’Arcane sans nom',
+    shaoYin:  'Tempérance',
+    shaoYang: 'Le Diable',
+    taiYang:  'La Maison Dieu'
+  }
+};
+
+const TAROT_MATRIX_2 = {
+  aucune: {
+    taiYin:   "L’Étoile",
+    shaoYin:  'La Lune',
+    shaoYang: 'Le Soleil',
+    taiYang:  'Le Jugement'
+  },
+  premier: {
+    taiYin:   'Le Monde',
+    shaoYin:  'Le Mat',
+    shaoYang: 'Le Bateleur',
+    taiYang:  'La Papesse'
+  },
+  deuxieme: {
+    taiYin:   'Le Bateleur',
+    shaoYin:  'Le Mat',
+    shaoYang: 'Le Monde',
+    taiYang:  'Le Jugement'
+  },
+  deux: {
+    taiYin:   'Le Soleil',
+    shaoYin:  'La Lune',
+    shaoYang: "L’Étoile",
+    taiYang:  'La Maison Dieu'
+  }
+};
+
+const TAROT_MATRIX_3 = {
+  aucune: {
+    taiYin:   'Le Diable',
+    shaoYin:  'Tempérance',
+    shaoYang: "L’Arcane sans nom",
+    taiYang:  'Le Pendu'
+  },
+  premier: {
+    taiYin:   'La Force',
+    shaoYin:  'La Roue de Fortune',
+    shaoYang: "L’Ermite",
+    taiYang:  'La Justice'
+  },
+  deuxieme: {
+    taiYin:   'Le Chariot',
+    shaoYin:  "L’Amoureux",
+    shaoYang: 'Le Pape',
+    taiYang:  "L’Empereur"
+  },
+  deux: {
+    taiYin:   "L’Impératrice",
+    shaoYin:  'La Papesse',
+    shaoYang: 'Le Bateleur',
+    taiYang:  'Le Mat'
+  }
+};
+
+const TAROT_MATRICES = [
+  TAROT_MATRIX_1,
+  TAROT_MATRIX_2,
+  TAROT_MATRIX_3
+];
+
+const TAROT_POSITIONS = [
+  {
+    titre: 'Individuation',
+    sousTitre: 'Le Moi · l’inachevé',
+    question: 'Qu’est-ce qui cherche à se constituer ?'
+  },
+  {
+    titre: 'Synchronicité',
+    sousTitre: 'Le Soi · le reflet · la Persona',
+    question: 'Qu’est-ce que la situation me renvoie ?'
+  },
+  {
+    titre: 'Conduite',
+    sousTitre: 'Le rite · le Grand Œuvre',
+    question: 'Comment conduire la transformation ?'
+  }
+];
+
+// Renvoie true pour un trait Yin.
+function tarotEstYin(trait) {
+  return trait === 'yin' || trait === 'yiChang';
+}
+
+// Renvoie la valeur classique 6, 7, 8 ou 9.
+function tarotValeurTrait(trait) {
+  return TRAIT_TO_VALEUR[trait];
+}
+
+// Détermine la famille du digramme initial.
+// Le premier argument est toujours le trait inférieur de la paire.
+function determinerDigrammeTarot(traitInferieur, traitSuperieur) {
+  const basYin = tarotEstYin(traitInferieur);
+  const hautYin = tarotEstYin(traitSuperieur);
+
+  if (basYin && hautYin) return {
+    cle: 'taiYin',
+    nom: 'Tai Yin'
+  };
+
+  if (!basYin && hautYin) return {
+    cle: 'shaoYin',
+    nom: 'Shao Yin'
+  };
+
+  if (basYin && !hautYin) return {
+    cle: 'shaoYang',
+    nom: 'Shao Yang'
+  };
+
+  return {
+    cle: 'taiYang',
+    nom: 'Tai Yang'
+  };
+}
+
+// Détermine l'état de mutation à l'intérieur de la paire.
+function determinerMutationTarot(traitInferieur, traitSuperieur) {
+  const premierMutant = estMutant(traitInferieur);
+  const deuxiemeMutant = estMutant(traitSuperieur);
+
+  if (premierMutant && deuxiemeMutant) {
+    return {
+      cle: 'deux',
+      nom: 'Deux traits mutables'
+    };
+  }
+
+  if (premierMutant) {
+    return {
+      cle: 'premier',
+      nom: 'Premier trait mutable'
+    };
+  }
+
+  if (deuxiemeMutant) {
+    return {
+      cle: 'deuxieme',
+      nom: 'Deuxième trait mutable'
+    };
+  }
+
+  return {
+    cle: 'aucune',
+    nom: 'Aucun trait mutable'
+  };
+}
+
+// Traduit une paire de traits en un Arcane.
+function traduirePaireEnArcane(paire, indexMatrice) {
+  if (!Array.isArray(paire) || paire.length !== 2) return null;
+
+  const traitInferieur = paire[0];
+  const traitSuperieur = paire[1];
+
+  const digramme = determinerDigrammeTarot(
+    traitInferieur,
+    traitSuperieur
+  );
+
+  const mutation = determinerMutationTarot(
+    traitInferieur,
+    traitSuperieur
+  );
+
+  const matrice = TAROT_MATRICES[indexMatrice];
+  const arcane = matrice[mutation.cle][digramme.cle];
+
+  return {
+    arcane,
+    digramme: digramme.nom,
+    mutation: mutation.nom,
+    valeurs: [
+      tarotValeurTrait(traitInferieur),
+      tarotValeurTrait(traitSuperieur)
+    ],
+    traits: [
+      traitInferieur,
+      traitSuperieur
+    ]
+  };
+}
+
+// Produit les trois cartes à partir des six traits du tirage.
+function calculerSyntheseTarotique() {
+  const lignes = tousTraits();
+
+  if (lignes.length !== 6) return null;
+
+  const paires = [
+    [lignes[0], lignes[1]],
+    [lignes[2], lignes[3]],
+    [lignes[4], lignes[5]]
+  ];
+
+  return paires.map((paire, index) => ({
+    ...TAROT_POSITIONS[index],
+    ...traduirePaireEnArcane(paire, index)
+  }));
+}
+
+  
 // ========== TIRAGES ==========
 // Trois pièces : face = 3, pile = 2. Total 6 à 9.
 function tirerPieces() {
