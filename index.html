@@ -790,7 +790,10 @@ function render() {
 
       ${bloc}
 
-      <div class="oracle-interpretation">
+${syntheseTarotiqueHTML()}
+
+<div class="oracle-interpretation">
+
         <div class="oracle-section"><div class="oracle-section-title">✨ Interprétation</div><div class="oracle-text">${h.interpretation}</div></div>
         ${h.advice ? `<div class="oracle-section"><div class="oracle-section-title">🌟 Conseil</div><div class="oracle-text">${h.advice}</div></div>` : ''}
         ${h.warning ? `<div class="oracle-section"><div class="oracle-section-title">⚠️ Mise en garde</div><div class="oracle-text">${h.warning}</div></div>` : ''}
