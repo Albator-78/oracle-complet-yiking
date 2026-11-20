@@ -11,22 +11,10 @@
   "lang": "fr",
   "icons": [
     {
-      "src": "./icon.svg",
-      "sizes": "any",
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='112' fill='%230f3460'/%3E%3Ccircle cx='256' cy='256' r='176' fill='none' stroke='%23FFD700' stroke-width='14'/%3E%3Cpath d='M256 80 A176 176 0 0 1 256 432 A88 88 0 0 1 256 256 A88 88 0 0 0 256 80 Z' fill='%23FFD700'/%3E%3Ccircle cx='256' cy='168' r='24' fill='%230f3460'/%3E%3Ccircle cx='256' cy='344' r='24' fill='%23FFD700'/%3E%3C/svg%3E",
+      "sizes": "512x512",
       "type": "image/svg+xml",
       "purpose": "any maskable"
-    },
-    {
-      "src": "./icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "./icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any"
     }
   ]
 }
