@@ -1,15 +1,16 @@
-const CACHE_NAME = 'yiching-oracle-v1';
+const CACHE_NAME = 'yiching-oracle-v2';
 const ASSETS = [
   './',
   './index.html',
   './hexagrammes.js',
-  './manifest.json',
-  './icon.svg'
+  './manifest.json'
 ];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
+    caches.open(CACHE_NAME).then((cache) =>
+      Promise.allSettled(ASSETS.map((url) => cache.add(url)))
+    )
   );
   self.skipWaiting();
 });
