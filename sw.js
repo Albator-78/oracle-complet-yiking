@@ -1,42 +1,60 @@
-const CACHE_NAME = 'yiching-oracle-v2';
-const ASSETS = [
+const CACHE_NAME = 'oracle-yi-ching-v1';
+
+const APP_FILES = [
   './',
   './index.html',
+  './manifest.json',
   './hexagrammes.js',
-  './manifest.json'
+  './icon.svg',
+  './icon-192.png',
+  './icon-512.png'
 ];
 
-self.addEventListener('install', (event) => {
+self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) =>
-      Promise.allSettled(ASSETS.map((url) => cache.add(url)))
-    )
+    caches.open(CACHE_NAME)
+      .then(cache => cache.addAll(APP_FILES))
+      .then(() => self.skipWaiting())
   );
-  self.skipWaiting();
 });
 
-self.addEventListener('activate', (event) => {
+self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(
-        keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key))
+    caches.keys()
+      .then(names =>
+        Promise.all(
+          names
+            .filter(name => name !== CACHE_NAME)
+            .map(name => caches.delete(name))
+        )
       )
-    )
+      .then(() => self.clients.claim())
   );
-  self.clients.claim();
 });
 
-self.addEventListener('fetch', (event) => {
+self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
+
   event.respondWith(
-    caches.match(event.request).then((cached) => {
-      return cached || fetch(event.request).then((response) => {
-        if (response && response.status === 200 && response.type === 'basic') {
-          const clone = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+    fetch(event.request)
+      .then(response => {
+        if (
+          response &&
+          response.status === 200 &&
+          response.type === 'basic'
+        ) {
+          const copie = response.clone();
+
+          caches.open(CACHE_NAME).then(cache => {
+            cache.put(event.request, copie);
+          });
         }
+
         return response;
-      }).catch(() => caches.match('./index.html'));
-    })
+      })
+      .catch(() =>
+        caches.match(event.request)
+          .then(response => response || caches.match('./index.html'))
+      )
   );
 });
