@@ -2899,6 +2899,53 @@ function render() {
         du tirage
       </a>
 
+<!-- Bouton / Lien à placer dans la zone d'affichage du résultat de votre Yi King -->
+<div id="ifa-bridge-box" style="margin-top: 1rem;">
+  <a id="link-to-ifa" href="#" target="_blank" rel="noopener noreferrer"
+     style="display: inline-block; padding: 0.65rem 1.1rem; background: #d4a359; color: #13100e; font-weight: bold; text-decoration: none; border-radius: 6px;">
+    🔮 Consulter l'Odu Ifá correspondant
+  </a>
+</div>
+
+<script>
+  // URL publique GitHub Pages de votre dépôt Ifá (remplacez [NOM-DEPOT-IFA] par le nom réel du dépôt)
+  const IFA_APP_URL = "https://albator-78.github.io/[NOM-DEPOT-IFA]/index.html";
+
+  /**
+   * Calcule l'ID de l'Odu (1 à 256) à partir de l'hexagramme (1 à 64) et du nombre de traits mutables (0 à 6)
+   * et met à jour le lien vers l'application Ifá.
+   *
+   * @param {number} hexagrammeNum - Numéro Roi Wen de 1 à 64
+   * @param {number} nbTraitsMutables - Nombre de traits mutables de 0 à 6
+   */
+  function updateIfaBridgeLink(hexagrammeNum, nbTraitsMutables) {
+    let tranche = 0;
+    if (nbTraitsMutables === 1 || nbTraitsMutables === 2) {
+      tranche = 1; // Odu 65 à 128
+    } else if (nbTraitsMutables === 3 || nbTraitsMutables === 4) {
+      tranche = 2; // Odu 129 à 192
+    } else if (nbTraitsMutables >= 5) {
+      tranche = 3; // Odu 193 à 256
+    }
+
+    const oduId = hexagrammeNum + (tranche * 64); // Résultat entre 1 et 256
+
+    const url = new URL(IFA_APP_URL);
+    url.searchParams.set("odu", oduId);
+    url.searchParams.set("hex", hexagrammeNum);
+    url.searchParams.set("mut", nbTraitsMutables);
+
+    const linkEl = document.getElementById("link-to-ifa");
+    if (linkEl) {
+      linkEl.href = url.toString();
+      linkEl.textContent = `🔮 Ouvrir l'Odu Ifá N°${oduId} (Hex. ${hexagrammeNum}, ${nbTraitsMutables} trait(s) mutable(s))`;
+    }
+  }
+
+  // Exemple d'appel à intégrer à la fin de votre fonction de rendu du tirage Yi King :
+  // updateIfaBridgeLink(state.hexagrammePrincipal.numero, state.lignesMutantes.length);
+</script>
+
       <!-- WENGU -->
 
       <a
