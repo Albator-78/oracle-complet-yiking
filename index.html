@@ -538,6 +538,22 @@ button:focus-visible,
   color: #ffd7a5;
 }
 
+.btn-ifa {
+  color: #f2cf91;
+  border-color: #d4a359;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(140,59,43,.55),
+      rgba(45,30,18,.75)
+    );
+}
+
+.btn-ifa:hover {
+  color: #fff;
+  border-color: #f2cf91;
+}
+
 .btn-ghost {
   background: transparent;
   color: #FFD700;
@@ -1703,6 +1719,7 @@ function analyserWuXing(
     mutation
   };
 }
+
 /* =====================================================
    LIENS EXTERNES
    ===================================================== */
@@ -1715,6 +1732,9 @@ const TAROT_BAGUA_URL =
 
 const ATELIER_POETIQUE_URL =
   'https://albator-78.github.io/atelier-poetique/';
+
+const IFA_URL =
+  'https://albator-78.github.io/f/';
 
 function lienTable() {
 
@@ -1773,6 +1793,68 @@ function lienTarotBagua() {
 }
 
 /* =====================================================
+   PASSERELLE VERS L'ODU IFÁ (256 ODUS)
+   ===================================================== */
+
+function calculerOduId() {
+
+  const nbMut =
+    lignesMutantes().length;
+
+  let tranche = 0;
+
+  if (
+    nbMut === 1 ||
+    nbMut === 2
+  ) {
+    tranche = 1; // Odu 65 à 128
+  } else if (
+    nbMut === 3 ||
+    nbMut === 4
+  ) {
+    tranche = 2; // Odu 129 à 192
+  } else if (
+    nbMut >= 5
+  ) {
+    tranche = 3; // Odu 193 à 256
+  }
+
+  return (
+    state.hexNum +
+    (tranche * 64)
+  );
+}
+
+function lienIfa() {
+
+  const u =
+    new URL(IFA_URL);
+
+  const oduId =
+    calculerOduId();
+
+  const nbMut =
+    lignesMutantes().length;
+
+  u.searchParams.set(
+    'odu',
+    String(oduId)
+  );
+
+  u.searchParams.set(
+    'hex',
+    String(state.hexNum)
+  );
+
+  u.searchParams.set(
+    'mut',
+    String(nbMut)
+  );
+
+  return u.toString();
+}
+
+/* =====================================================
    PASSERELLE VERS L'ATELIER POÉTIQUE
    ===================================================== */
 
@@ -1803,20 +1885,10 @@ function lienAtelierPoetique() {
       )
     ];
 
-  /*
-    Hexagramme principal
-  */
-
   u.searchParams.set(
     'hex',
     String(state.hexNum)
   );
-
-  /*
-    Six lignes traditionnelles :
-    6, 7, 8 ou 9,
-    du bas vers le haut.
-  */
 
   u.searchParams.set(
     'lignes',
@@ -1828,10 +1900,6 @@ function lienAtelierPoetique() {
       .join(',')
   );
 
-  /*
-    Lignes mutantes
-  */
-
   const mutantes =
     lignesMutantes();
 
@@ -1842,10 +1910,6 @@ function lienAtelierPoetique() {
       mutantes.join(',')
     );
   }
-
-  /*
-    Hexagramme relatif
-  */
 
   if (hasChanging()) {
 
@@ -1862,10 +1926,6 @@ function lienAtelierPoetique() {
     }
   }
 
-  /*
-    Trigrammes
-  */
-
   u.searchParams.set(
     'base',
     trigrammeInferieur.fr
@@ -1875,11 +1935,6 @@ function lienAtelierPoetique() {
     'manifestation',
     trigrammeSuperieur.fr
   );
-
-  /*
-    Trois arcanes calculés
-    par les trois digrammes.
-  */
 
   if (
     synthese &&
@@ -2523,6 +2578,12 @@ function render() {
       tri2
     );
 
+  const nbMut =
+    lignesMutantes().length;
+
+  const oduId =
+    calculerOduId();
+
   /* ---------- MUTATIONS ---------- */
 
   let bloc = '';
@@ -2899,52 +2960,17 @@ function render() {
         du tirage
       </a>
 
-<!-- Bouton / Lien à placer dans la zone d'affichage du résultat de votre Yi King -->
-<div id="ifa-bridge-box" style="margin-top: 1rem;">
-  <a id="link-to-ifa" href="#" target="_blank" rel="noopener noreferrer"
-     style="display: inline-block; padding: 0.65rem 1.1rem; background: #d4a359; color: #13100e; font-weight: bold; text-decoration: none; border-radius: 6px;">
-    🔮 Consulter l'Odu Ifá correspondant
-  </a>
-</div>
+      <!-- ODU IFÁ -->
 
-<script>
-  // URL publique GitHub Pages de votre dépôt Ifá (remplacez [NOM-DEPOT-IFA] par le nom réel du dépôt)
-  const IFA_APP_URL = "https://albator-78.github.io/f/index.html";
-
-  /**
-   * Calcule l'ID de l'Odu (1 à 256) à partir de l'hexagramme (1 à 64) et du nombre de traits mutables (0 à 6)
-   * et met à jour le lien vers l'application Ifá.
-   *
-   * @param {number} hexagrammeNum - Numéro Roi Wen de 1 à 64
-   * @param {number} nbTraitsMutables - Nombre de traits mutables de 0 à 6
-   */
-  function updateIfaBridgeLink(hexagrammeNum, nbTraitsMutables) {
-    let tranche = 0;
-    if (nbTraitsMutables === 1 || nbTraitsMutables === 2) {
-      tranche = 1; // Odu 65 à 128
-    } else if (nbTraitsMutables === 3 || nbTraitsMutables === 4) {
-      tranche = 2; // Odu 129 à 192
-    } else if (nbTraitsMutables >= 5) {
-      tranche = 3; // Odu 193 à 256
-    }
-
-    const oduId = hexagrammeNum + (tranche * 64); // Résultat entre 1 et 256
-
-    const url = new URL(IFA_APP_URL);
-    url.searchParams.set("odu", oduId);
-    url.searchParams.set("hex", hexagrammeNum);
-    url.searchParams.set("mut", nbTraitsMutables);
-
-    const linkEl = document.getElementById("link-to-ifa");
-    if (linkEl) {
-      linkEl.href = url.toString();
-      linkEl.textContent = `🔮 Ouvrir l'Odu Ifá N°${oduId} (Hex. ${hexagrammeNum}, ${nbTraitsMutables} trait(s) mutable(s))`;
-    }
-  }
-
-  // Exemple d'appel à intégrer à la fin de votre fonction de rendu du tirage Yi King :
-  // updateIfaBridgeLink(state.hexagrammePrincipal.numero, state.lignesMutantes.length);
-</script>
+      <a
+        class="btn-table btn-ifa"
+        href="${lienIfa()}"
+        target="_blank"
+        rel="noopener"
+      >
+        🔮 Odu Ifá n°${oduId}
+        (${nbMut} trait${nbMut > 1 ? 's' : ''} mutable${nbMut > 1 ? 's' : ''})
+      </a>
 
       <!-- WENGU -->
 
